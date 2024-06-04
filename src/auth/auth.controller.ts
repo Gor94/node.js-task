@@ -12,9 +12,7 @@ import {
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
-//
 import { LocalAuthGuard } from './guards/local-auth.guard';
-//
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { LoginDto } from '../user/dto/login.dto';
 
@@ -35,10 +33,10 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
     }
-
+    //todo add max age from .env file
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
     return tokens;
@@ -54,7 +52,7 @@ export class AuthController {
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
     return tokens;

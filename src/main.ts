@@ -4,9 +4,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
+import { AuthIoAdapter } from './chat/adapter/auth.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.use(cookieParser());
 
   app.useGlobalPipes(
@@ -15,6 +17,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.useWebSocketAdapter(new AuthIoAdapter(app));
 
   const options = new DocumentBuilder()
     .setTitle('Realtime Chat')

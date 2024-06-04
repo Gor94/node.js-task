@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
+import { Room } from '../room/entities/room.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -33,6 +34,19 @@ export class UserService {
     const user = await this.userRepository.create({
       ...createUserDto,
     });
+
+    return this.userRepository.save(user);
+  }
+
+  async updateUserRoom(id: string, room: Room) {
+    const user = await this.userRepository.preload({
+      id,
+      room,
+    });
+
+    if (!user) {
+      throw new NotFoundException(`There is no user under id ${id}`);
+    }
 
     return this.userRepository.save(user);
   }

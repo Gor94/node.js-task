@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { Room } from './entities/room.entity';
 import { Message } from './entities/message.entity';
 import { CreateRoomDto } from 'src/room/dto/create-room.dto';
+import { AddMessageDto } from '../chat/dto/add-message.dto';
+import { RemoveMessageDto } from '../chat/dto/remove-message.dto';
 
 @Injectable()
 export class RoomService {
@@ -29,10 +35,6 @@ export class RoomService {
     return room;
   }
 
-  async findRoomByName(name: string) {
-    return this.roomRepository.findOne({ where: { name } });
-  }
-
   async createRoom(createRoomDto: CreateRoomDto) {
     const room = await this.roomRepository.create({
       ...createRoomDto,
@@ -41,7 +43,7 @@ export class RoomService {
     return this.roomRepository.save(room);
   }
 
-  async addMessage(addMessageDto: any) {
+  async addMessage(addMessageDto: AddMessageDto) {
     const { roomId, userId, text } = addMessageDto;
 
     const room = await this.findRoom(roomId);
@@ -54,5 +56,35 @@ export class RoomService {
     });
 
     return this.messageRepository.save(message);
+  }
+
+  async removeMessage(removeMessageDto: RemoveMessageDto) {
+    const { roomId, userId, messageId } = removeMessageDto;
+
+    const room = await this.findRoom(roomId);
+    const user = await this.userService.findOne(userId);
+
+    const message = await this.messageRepository.findOne({
+      where: { id: messageId, user, room },
+    });
+    if (!message) {
+      throw new ForbiddenException(
+        `You have not permission to remove this message`,
+      );
+    }
+    return this.messageRepository.remove(message);
+  }
+
+  async findRoomWithRelations(id: string) {
+    const room = await this.roomRepository.findOne({
+      where: { id },
+      relations: ['messages', 'users', 'bannedUsers'],
+    });
+
+    if (!room) {
+      throw new NotFoundException(`There is no room under id ${id}`);
+    }
+
+    return room;
   }
 }

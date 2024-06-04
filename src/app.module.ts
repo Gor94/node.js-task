@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RoomModule } from './room/room.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RoomModule } from './room/room.module';
     UserModule,
     AuthModule,
     RoomModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],
