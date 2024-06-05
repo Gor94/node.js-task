@@ -39,7 +39,7 @@ $ npm install
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
 $ npm run start:prod
@@ -57,6 +57,43 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Features
+
+- PassportJS/JWT auth
+- Chat
+- Rooms
+
+## Installation
+
+```bash
+$ npm install
+```
+
+## Example of .env file
+```bash
+JWT_ACCESS_SECRET=ACCESS_SECRET
+JWT_REFRESH_SECRET=REFRESH_SECRET
+JWT_ACCESS_EXPIRE=60m
+JWT_REFRESH_EXPIRE=30d
+DB_NAME=chatDB
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=chiefuser
+DB_PASS=qwerty123
+```
+
+## Running the app
+
+```bash
+# start docker containers
+$ docker-compose up
+
+# development
+$ npm run dev
+```
+## Postman Workspace URL
+https://www.postman.com/cloudy-astronaut-961463/workspace/test-task-ws
 
 ## Support
 
