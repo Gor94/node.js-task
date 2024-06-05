@@ -39,10 +39,14 @@ describe('AuthController', () => {
       jest.spyOn(authService, 'signUp').mockResolvedValue(tokens);
 
       expect(await authController.signUp(userDto, res)).toBe(tokens);
-      expect(res.cookie).toHaveBeenCalledWith('refreshToken', tokens.refreshToken, {
-        httpOnly: true,
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-      });
+      expect(res.cookie).toHaveBeenCalledWith(
+        'refreshToken',
+        tokens.refreshToken,
+        {
+          httpOnly: true,
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+        },
+      );
     });
 
     it('should throw an error if user already exists', async () => {
@@ -54,7 +58,10 @@ describe('AuthController', () => {
       jest.spyOn(authService, 'signUp').mockResolvedValue(null);
 
       await expect(authController.signUp(userDto, res)).rejects.toThrow(
-        new HttpException('User under this username already exists', HttpStatus.BAD_REQUEST),
+        new HttpException(
+          'User under this username already exists',
+          HttpStatus.BAD_REQUEST,
+        ),
       );
     });
   });
@@ -70,10 +77,14 @@ describe('AuthController', () => {
       jest.spyOn(authService, 'signIn').mockResolvedValue(tokens);
 
       expect(await authController.singIn(userDto, res)).toBe(tokens);
-      expect(res.cookie).toHaveBeenCalledWith('refreshToken', tokens.refreshToken, {
-        httpOnly: true,
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-      });
+      expect(res.cookie).toHaveBeenCalledWith(
+        'refreshToken',
+        tokens.refreshToken,
+        {
+          httpOnly: true,
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+        },
+      );
     });
   });
 
@@ -86,7 +97,9 @@ describe('AuthController', () => {
       } as any;
       const accessToken = 'accessToken';
 
-      jest.spyOn(authService, 'updateAccessToken').mockResolvedValue(accessToken);
+      jest
+        .spyOn(authService, 'updateAccessToken')
+        .mockResolvedValue(accessToken);
 
       expect(await authController.updateTokens(req)).toBe(accessToken);
     });

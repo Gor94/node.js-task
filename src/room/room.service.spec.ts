@@ -39,7 +39,9 @@ describe('RoomService', () => {
 
     service = module.get<RoomService>(RoomService);
     roomRepository = module.get<Repository<Room>>(getRepositoryToken(Room));
-    messageRepository = module.get<Repository<Message>>(getRepositoryToken(Message));
+    messageRepository = module.get<Repository<Message>>(
+      getRepositoryToken(Message),
+    );
     userService = module.get<UserService>(UserService);
   });
 
@@ -88,7 +90,11 @@ describe('RoomService', () => {
 
   describe('addMessage', () => {
     it('should add and return a message', async () => {
-      const addMessageDto: AddMessageDto = { roomId: '1', userId: '1', text: 'Hello' };
+      const addMessageDto: AddMessageDto = {
+        roomId: '1',
+        userId: '1',
+        text: 'Hello',
+      };
       const room = { id: '1', name: 'Test Room' } as Room;
       const user = { id: '1', username: 'Test User' } as any; // replace 'any' with your User type
       const message = { id: '1', text: 'Hello', room, user } as Message;
@@ -104,7 +110,11 @@ describe('RoomService', () => {
 
   describe('removeMessage', () => {
     it('should remove a message if found and return it', async () => {
-      const removeMessageDto: RemoveMessageDto = { roomId: '1', userId: '1', messageId: '1' };
+      const removeMessageDto: RemoveMessageDto = {
+        roomId: '1',
+        userId: '1',
+        messageId: '1',
+      };
       const room = { id: '1', name: 'Test Room' } as Room;
       const user = { id: '1', username: 'Test User' } as any; // replace 'any' with your User type
       const message = { id: '1', text: 'Hello', room, user } as Message;
@@ -118,7 +128,11 @@ describe('RoomService', () => {
     });
 
     it('should throw ForbiddenException if message not found', async () => {
-      const removeMessageDto: RemoveMessageDto = { roomId: '1', userId: '1', messageId: '1' };
+      const removeMessageDto: RemoveMessageDto = {
+        roomId: '1',
+        userId: '1',
+        messageId: '1',
+      };
       const room = { id: '1', name: 'Test Room' } as Room;
       const user = { id: '1', username: 'Test User' } as any; // replace 'any' with your User type
 
@@ -127,7 +141,9 @@ describe('RoomService', () => {
       jest.spyOn(messageRepository, 'findOne').mockResolvedValue(null);
 
       await expect(service.removeMessage(removeMessageDto)).rejects.toThrow(
-        new ForbiddenException(`You have not permission to remove this message`),
+        new ForbiddenException(
+          `You have not permission to remove this message`,
+        ),
       );
     });
   });
@@ -135,7 +151,13 @@ describe('RoomService', () => {
   describe('findRoomWithRelations', () => {
     it('should return a room with relations if found', async () => {
       const roomId = '1';
-      const room = { id: roomId, name: 'Test Room', messages: [], users: [], bannedUsers: [] } as Room;
+      const room = {
+        id: roomId,
+        name: 'Test Room',
+        messages: [],
+        users: [],
+        bannedUsers: [],
+      } as Room;
       jest.spyOn(roomRepository, 'findOne').mockResolvedValue(room);
 
       expect(await service.findRoomWithRelations(roomId)).toEqual(room);

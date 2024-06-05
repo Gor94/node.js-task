@@ -51,7 +51,10 @@ describe('AuthService', () => {
     it('should return null if user already exists', async () => {
       jest.spyOn(userService, 'findOneByUsername').mockResolvedValue({} as any);
 
-      const result = await authService.signUp({ username: 'test', password: 'test' } as CreateUserDto);
+      const result = await authService.signUp({
+        username: 'test',
+        password: 'test',
+      } as CreateUserDto);
 
       expect(result).toBeNull();
     });
@@ -65,7 +68,10 @@ describe('AuthService', () => {
         refreshToken: 'refreshToken',
       });
 
-      const result = await authService.signUp({ username: 'test', password: 'test' } as CreateUserDto);
+      const result = await authService.signUp({
+        username: 'test',
+        password: 'test',
+      } as CreateUserDto);
 
       expect(result).toEqual({
         accessToken: 'accessToken',
@@ -76,13 +82,18 @@ describe('AuthService', () => {
 
   describe('signIn', () => {
     it('should return tokens for valid user', async () => {
-      jest.spyOn(userService, 'findOneByUsername').mockResolvedValue({ id: '1' } as any);
+      jest
+        .spyOn(userService, 'findOneByUsername')
+        .mockResolvedValue({ id: '1' } as any);
       jest.spyOn(authService, 'generateTokens').mockResolvedValue({
         accessToken: 'accessToken',
         refreshToken: 'refreshToken',
       });
 
-      const result = await authService.signIn({ username: 'test', password: 'test' } as LoginDto);
+      const result = await authService.signIn({
+        username: 'test',
+        password: 'test',
+      } as LoginDto);
 
       expect(result).toEqual({
         accessToken: 'accessToken',
@@ -95,25 +106,38 @@ describe('AuthService', () => {
     it('should throw NotFoundException if user does not exist', async () => {
       jest.spyOn(userService, 'findOneByUsername').mockResolvedValue(null);
 
-      await expect(authService.validateUser({ username: 'test', password: 'test' } as LoginDto)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        authService.validateUser({
+          username: 'test',
+          password: 'test',
+        } as LoginDto),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('should throw UnauthorizedException if password is incorrect', async () => {
-      jest.spyOn(userService, 'findOneByUsername').mockResolvedValue({ password: 'hashedPassword' } as any);
+      jest
+        .spyOn(userService, 'findOneByUsername')
+        .mockResolvedValue({ password: 'hashedPassword' } as any);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
-      await expect(authService.validateUser({ username: 'test', password: 'test' } as LoginDto)).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        authService.validateUser({
+          username: 'test',
+          password: 'test',
+        } as LoginDto),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return user if password is correct', async () => {
-      jest.spyOn(userService, 'findOneByUsername').mockResolvedValue({ password: 'hashedPassword' } as any);
+      jest
+        .spyOn(userService, 'findOneByUsername')
+        .mockResolvedValue({ password: 'hashedPassword' } as any);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-      const result = await authService.validateUser({ username: 'test', password: 'test' } as LoginDto);
+      const result = await authService.validateUser({
+        username: 'test',
+        password: 'test',
+      } as LoginDto);
 
       expect(result).toEqual({ password: 'hashedPassword' });
     });

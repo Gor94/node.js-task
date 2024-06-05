@@ -3,7 +3,6 @@ import { RoomController } from './room.controller';
 import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateRoomDto } from './dto/create-room.dto';
-import { ExecutionContext } from '@nestjs/common';
 import { Room } from './entities/room.entity';
 
 describe('RoomController', () => {
@@ -26,7 +25,7 @@ describe('RoomController', () => {
     })
       .overrideGuard(JwtAuthGuard)
       .useValue({
-        canActivate: (context: ExecutionContext) => true,
+        canActivate: () => true,
       })
       .compile();
 
@@ -41,7 +40,12 @@ describe('RoomController', () => {
   describe('findOne', () => {
     it('should return a room if found', async () => {
       const roomId = '1';
-      const room: Room = { id: roomId, name: 'Test Room', users: [], messages: [] };
+      const room: Room = {
+        id: roomId,
+        name: 'Test Room',
+        users: [],
+        messages: [],
+      };
       jest.spyOn(roomService, 'findRoom').mockResolvedValue(room);
 
       expect(await controller.findOne(roomId)).toEqual(room);
