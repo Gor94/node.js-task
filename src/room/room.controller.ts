@@ -1,10 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-
 import { CreateRoomDto } from './dto/create-room.dto';
-
 import { RoomService } from './room.service';
-
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('room')
 export class RoomController {

@@ -8,9 +8,9 @@ import {
 
 import { Socket } from 'socket.io';
 
-import { UserService } from 'src/user/user.service';
-import { AuthService } from 'src/auth/auth.service';
-import { RoomService } from 'src/room/room.service';
+import { UserService } from '../user/user.service';
+import { AuthService } from '../auth/auth.service';
+import { RoomService } from '../room/room.service';
 
 import { AddMessageDto } from './dto/add-message.dto';
 import { JoinRoomDto } from './dto/join-room.dto';

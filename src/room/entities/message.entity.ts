@@ -15,7 +15,7 @@ export class Message {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 250 })
   text: string;
 
   @CreateDateColumn()

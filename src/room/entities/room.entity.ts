@@ -14,6 +14,6 @@ export class Room {
   @OneToMany(() => User, (user: User) => user.room)
   users: Array<User>;
 
-  @OneToMany(() => Message, (message: Message) => message.room)
+  @OneToMany(() => Message, (messages: Message) => messages.room)
   messages: Array<Message>;
 }

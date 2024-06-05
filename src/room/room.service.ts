@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { Room } from './entities/room.entity';
 import { Message } from './entities/message.entity';
-import { CreateRoomDto } from 'src/room/dto/create-room.dto';
+import { CreateRoomDto } from './dto/create-room.dto';
 import { AddMessageDto } from '../chat/dto/add-message.dto';
 import { RemoveMessageDto } from '../chat/dto/remove-message.dto';
 

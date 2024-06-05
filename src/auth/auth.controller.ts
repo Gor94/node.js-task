@@ -8,12 +8,10 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-
 import { Request, Response } from 'express';
-
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginDto } from '../user/dto/login.dto';
 
 @Controller('auth')
@@ -21,11 +19,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signUp')
-  async singUp(
+  async signUp(
     @Body() userDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const tokens = await this.authService.singUp(userDto);
+    const tokens = await this.authService.signUp(userDto);
 
     if (!tokens) {
       throw new HttpException(
